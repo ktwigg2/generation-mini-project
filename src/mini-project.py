@@ -47,7 +47,7 @@ def product_menu():
         delete_product_menu()
 
 def add_product_menu():
-    df = pd.read_csv("products.csv")
+    df = pd.read_csv(products)
     print(df)
     new_pname = input("Please enter the new product name or press enter to return to product menu: ")
     if new_pname == "": # No input will redirect to product menu
@@ -60,13 +60,13 @@ def add_product_menu():
         df.loc[-1] = new_product # using df.loc[-1] to place the new_product dictionary at the last index
         df = df.reset_index(drop = True) # resets index
         df['p_id'] = range(1, 1+len(df)) # To be honest I'm not sure how this works, but it allows my p_id to be stored properly
-        df.to_csv("products.csv", index=False) 
+        df.to_csv(products, index=False) 
         print(df)
         input("Press enter to return to products menu.")
     product_menu()
 
 def update_product_menu():
-    df = pd.read_csv("products.csv")
+    df = pd.read_csv(products)
     print(df)
     update_product = input("Please enter the index number of the product you would like to add or press enter to return to previous menu: ")
     if update_product == "":
@@ -82,20 +82,20 @@ def update_product_menu():
     else:
         df.loc[int(update_product), "price"] = float(new_price) 
         print(df)
-    df.to_csv('products.csv', index = False) 
+    df.to_csv(products, index = False) 
     input("Press enter to return to product menu: ")
     product_menu()
 
 def delete_product_menu():
     print("\nList of products")
-    df = pd.read_csv('products.csv')
+    df = pd.read_csv(products)
     print(df)
     delete_product = input("Please enter the index number of the product you want to delete or press enter to return to the previous menu: ")
     if delete_product == "":
         pass
     else:
         df = df.drop(labels=int(delete_product), axis = 0) 
-        df.to_csv('products.csv', index=False) # When saving a csv file, 'index=False is important to avoid pandas writing the index values to a new column in the CSV.
+        df.to_csv(products, index=False) # When saving a csv file, 'index=False is important to avoid pandas writing the index values to a new column in the CSV.
         print(df)
         input("Press enter to return to product menu.")
     product_menu()    
@@ -112,7 +112,7 @@ def orders_menu():
     if orders_menu_option == "0":
         main_menu()
     elif orders_menu_option == "1": 
-        df = pd.read_csv('orders.csv')
+        df = pd.read_csv(orders)
         print(df)
         sortby = input("\nTo return to previous menu press enter, to sort orders by courier type 1, to sort by delivery status type 2: ")
         if sortby == "": 
@@ -137,14 +137,14 @@ def orders_menu():
         delete_orders_menu()
 
 def add_order():
-    df = pd.read_csv("orders.csv")
+    df = pd.read_csv(orders)
     nname = input("Please enter name: ")
     naddress = input("Please enter address: ")
     nnumber = input("Please enter phone number: ")
-    prod_df = pd.read_csv("products.csv")
+    prod_df = pd.read_csv(products)
     print(prod_df) 
     items = input("Please enter the ID of the product you would like to buy, for multiple items separate the IDs by commas: ")
-    dfcourier = pd.read_csv("couriers.csv") # Reading and printing the couriers file to display a list of available couriers
+    dfcourier = pd.read_csv(couriers) # Reading and printing the couriers file to display a list of available couriers
     print(dfcourier)
     selected_courier = input("Please enter the index number of the courier you would like to assign: ")
     ncourier = (int(selected_courier))
@@ -152,12 +152,12 @@ def add_order():
     new_order = [nname, naddress, int(nnumber), int(ncourier), nstatus, items]
     df.loc[-1] = new_order
     df = df.reset_index(drop = True) # resets index
-    df.to_csv("orders.csv", index = False)
+    df.to_csv(orders, index = False)
     print(df)
     orders_menu()
 
 def update_order_status():
-    df = pd.read_csv('orders.csv')
+    df = pd.read_csv(orders)
     print(df)
     update_status = input("Please select the index number of the order you would like to update: ")
     order_statuses = ["PREPARING", "SHIPPED", "DELIVERED", "CANCELLED"]
@@ -166,12 +166,12 @@ def update_order_status():
     new_status = input("Select the new status by typing the index value above: ")
     df.loc[int(update_status), "Status"] = order_statuses[int(new_status)] # Replacing the status of accessed file with that of the selected index value
     df = df.reset_index(drop = True) # resets index. I don't think this is needed now but it fixed an issue I was having with my indexes
-    df.to_csv('orders.csv', index = False)
+    df.to_csv(orders, index = False)
     input("Press enter to return to orders menu.")
     orders_menu()
 
 def update_order():
-    df = pd.read_csv('orders.csv')
+    df = pd.read_csv(orders)
     print(df)
     update_order = input("Please select the index number of the order you would like to update: ")
     new_name = input("Enter the new name or press enter to skip: ")
@@ -189,7 +189,7 @@ def update_order():
         pass
     else: 
         df.loc[int(update_order), "Phone number"] = new_phone
-    courier_df = pd.read_csv('couriers.csv')
+    courier_df = pd.read_csv(couriers)
     print(courier_df)
     new_courier = input("Please enter the index value of the new courier or press enter to skip: ")
     if new_courier == "":
@@ -197,13 +197,13 @@ def update_order():
     else:
         df.loc[int(update_order), "Courier"] = int(new_courier)
     print(df)
-    df.to_csv('orders.csv', index = False)
+    df.to_csv(orders, index = False)
     input("Press enter to return to orders menu.")
     orders_menu()
 
 def delete_orders_menu():
     print("\nList of orders")
-    df = pd.read_csv('orders.csv')
+    df = pd.read_csv(orders)
     df.drop(df.filter(regex="Unname"),axis=1, inplace=True)
     print(df)
     delete_order = input("Please enter the index number of the order you want to delete or type 'exit' to return to the previous menu: ")
@@ -211,7 +211,7 @@ def delete_orders_menu():
         orders_menu()
     else:
         df = df.drop(labels=int(delete_order), axis = 0)
-        df.to_csv('orders.csv', index=False) # When saving a csv file, 'index=False is important to avoid pandas writing the index values to a new column in the CSV.
+        df.to_csv(orders, index=False) # When saving a csv file, 'index=False is important to avoid pandas writing the index values to a new column in the CSV.
     print(df)
     input("Press enter to return to orders menu.")
     orders_menu()
@@ -227,7 +227,7 @@ def couriers_menu():
     if courier_menu_option == "0":
         main_menu()
     elif courier_menu_option == "1":
-        df = pd.read_csv('couriers.csv')
+        df = pd.read_csv(couriers)
         print(df)
         input("Press enter to return to couriers menu.")
         couriers_menu()
@@ -239,7 +239,7 @@ def couriers_menu():
         delete_courier_menu()
 
 def add_courier_menu():
-    df = pd.read_csv("couriers.csv")
+    df = pd.read_csv(couriers)
     print(df)
     new_cname = input("Please enter the courier's name: ")
     new_cnumber = input("Please enter the courier's phone number: ")
@@ -247,13 +247,13 @@ def add_courier_menu():
     print(new_courier)
     df.loc[-1] = new_courier
     df = df.reset_index(drop = True) # resets index
-    df.to_csv("couriers.csv", index=False)
+    df.to_csv(couriers, index=False)
     print(df)
     input("Press enter to return to couriers menu.")
     couriers_menu()
 
 def update_courier_menu():
-    df = pd.read_csv("couriers.csv")
+    df = pd.read_csv(couriers)
     print(df)
     update_courier = input("Please select the index number of the courier you would like to update: ")
     update_courier_name = input("Please enter the new courier name or press enter to skip: ")
@@ -267,12 +267,12 @@ def update_courier_menu():
     else: 
         df.loc[int(update_courier), "number"] = update_courier_number
     print(df)
-    df.to_csv("couriers.csv", index=False)
+    df.to_csv(couriers, index=False)
     couriers_menu()
 
 def delete_courier_menu():
     print("\nList of couriers")
-    df = pd.read_csv('couriers.csv')
+    df = pd.read_csv(couriers)
     # df.drop(df.filter(regex="Unname"),axis=1, inplace=True)
     print(df)
     delete_courier = input("Please enter the index number of the courier you want to delete or type 'exit' to return to the previous menu: ")
@@ -280,7 +280,7 @@ def delete_courier_menu():
         orders_menu()
     else:
         df = df.drop(labels=int(delete_courier), axis = 0)
-        df.to_csv('couriers.csv', index=False) # When saving a csv file, 'index=False is important to avoid pandas writing the index values to a new column in the CSV.
+        df.to_csv(couriers, index=False) # When saving a csv file, 'index=False is important to avoid pandas writing the index values to a new column in the CSV.
     print(df)
     input("Press enter to return to couriers menu.")
     couriers_menu()
