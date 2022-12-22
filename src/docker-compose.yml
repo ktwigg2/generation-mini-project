@@ -5,9 +5,9 @@ services:
     container_name: mysql_container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "${mysql_pass}" #formerly: "${mysql_pass}" now "password" | now changed back to "${mysql_pass}"
+      MYSQL_ROOT_PASSWORD: "${mysql_pass}"
     ports:
-      - "3306:3306" #changed from port 3306 to 3307 | now changed back to 3306
+      - "3306:3306"
     volumes:
       - type: volume
         source: my_db

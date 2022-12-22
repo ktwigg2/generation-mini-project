@@ -1,4 +1,3 @@
-
 import pandas as pd 
 from sys import exit
 
@@ -6,6 +5,8 @@ from sys import exit
 products = "C:/Users/Generation UK&I/generation python course/mini project 1/data/products.csv"
 couriers = "C:/Users/Generation UK&I/generation python course/mini project 1/data/couriers.csv"
 orders = "C:/Users/Generation UK&I/generation python course/mini project 1/data/orders.csv"
+
+
 
 def main_menu():                                      
     print("\nMAIN MENU\n")
